@@ -33,7 +33,7 @@ export const Header = () => {
     });
   };
   const divStyle = {
-    display: 'none'
+    
   };
 
   return (
@@ -76,7 +76,7 @@ export const Header = () => {
               );
             })
           )}
-          <NavDropdown style={divStyle} title={"More"} onClick={() => history.push("/items")}></NavDropdown>
+          <NavDropdown id="more_items" title={"More"} onClick={() => history.push("/items")}></NavDropdown>
         </Nav>    
       </Navbar.Collapse>
     </Navbar>

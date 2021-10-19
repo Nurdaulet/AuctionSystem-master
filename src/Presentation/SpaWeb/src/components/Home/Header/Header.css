@@ -1,3 +1,23 @@
 .nav-item.dropdown:hover .dropdown-menu {
   display: block;
 }
+/* A link that has not been visited */  
+#more_items:link {
+  color: rgb(100, 93, 93)
+}
+/* A link that has been visited */
+#more_items:visited {
+  color: blue;
+}
+/* A link that is hovered on */
+#more_items:hover {
+  color: red;
+}
+/* A link that is selected */
+#more_items:active {
+  color: green;
+}
+
+#more_items::after{
+  display: none; 
+}
