@@ -76,8 +76,15 @@ export const Search = ({ loading, state, setState }) => {
               {!loading ? (
                 <Form.Control
                   as="select"
-                  defaultValue={state.CategoryId ?? state.CategoryId}
-                  onChange={(e) => setSelectedView(e.target.value)}
+                  value={state.categoryId ?? ""}
+                  onChange={(e) => {      
+                    if(e.target.value !== "Select a make"){
+                      history.replace(`/items/${e.target.value}`);
+                    }
+                    const value = e.target.value;
+                    setState((prev) => ({ ...prev, categoryId: value }));
+                    setSelectedView(e.target.value);        
+                  }}
                 >
                   <option onClick={() => history.replace("/items")}>
                     Select make
@@ -86,9 +93,6 @@ export const Search = ({ loading, state, setState }) => {
                     return (
                         <option
                           key={index}
-                          onClick={(e) => {
-                            history.replace(`/items/${e.target.value}`);
-                          }}
                           value={category.id}
                         >
                           {category.name}
@@ -107,20 +111,23 @@ export const Search = ({ loading, state, setState }) => {
               {!loading ? (
                 <Form.Control
                   as="select"
-                  defaultValue={state.subCategoryId ?? state.subCategoryId}
+                  value={state.subCategoryId ?? ""}
+                  onChange={(e) => {      
+                    if(e.target.value !== "Select a model"){
+                      history.replace(`/items/${e.target.value}`);
+                    }
+                    const value = e.target.value;
+                    setState((prev) => ({ ...prev, subCategoryId: value }));    
+                  }}
                 >
-                  <option onClick={() => history.replace("/items")}>
+                  <option>
                     Select model
                   </option>
                   {categories.filter(({id}) => id === selectedView).map((category) => {
-                    console.log(category.id);
                     return category.subCategories.map((subCategory, index) => {
                       return (
                         <option
-                          key={index}
-                          onClick={(e) => {
-                            history.replace(`/items/${e.target.value}`);
-                          }}  
+                          key={index} 
                           value={subCategory.id}
                         >
                           {subCategory.name}

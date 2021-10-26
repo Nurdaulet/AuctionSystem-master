@@ -28,14 +28,14 @@ export const Create = () => {
   const { currentTime } = useTime();
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
-
+  const [selectedView, setSelectedView] = useState('6968329f-6e27-ec11-9a36-e4b97af0664c');
   useEffect(() => {
     setStartTime(moment(currentTime).add(2, "minutes").toDate());
     setEndTime(moment(currentTime).add(1, "week").add(10, "m").toDate());
   }, [currentTime]);
 
   useEffect(() => {
-    categoriesService.getAll().then((response) => {
+    categoriesService.getAllWithMakes().then((response) => {
       setCategories(response.data.data);
     });
   }, []);
@@ -89,6 +89,50 @@ export const Create = () => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+          <Form.Group controlId="Make">
+            <Form.Label>Make</Form.Label>
+            <Form.Control
+              custom
+              name="categoryId"
+              ref={register({ required: "Make is required" })}
+              onChange={(e) => setSelectedView(e.target.value)}
+              as="select"
+            >
+              {categories.map((category, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </option>
+                );
+              })}
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="Model">
+            <Form.Label>Model</Form.Label>
+            <Form.Control
+              custom
+              name="subCategoryId"
+              ref={register({ required: "Model is required" })}
+              as="select"
+            >
+              {categories.filter(({ id }) => id === selectedView).map((category) => {
+                return category.subCategories.map((subCategory, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={subCategory.id}
+                    >
+                      {subCategory.name}
+                    </option>
+                  );
+                });
+              })}
+            </Form.Control>
+          </Form.Group>
+
           <Form.Group controlId="description">
             <Form.Label>Description</Form.Label>
             <Form.Control
@@ -183,7 +227,7 @@ export const Create = () => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group controlId="category">
+          {/* <Form.Group controlId="category">
             <Form.Label>Category</Form.Label>
             <Form.Control
               custom
@@ -202,7 +246,7 @@ export const Create = () => {
                 });
               })}
             </Form.Control>
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group>
             <ImageUploader onChange={onDrop} />
           </Form.Group>

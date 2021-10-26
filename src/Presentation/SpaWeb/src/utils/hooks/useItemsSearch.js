@@ -19,7 +19,7 @@ const useItemsSearch = (query, pageNumber, setPageNumber) => {
 
     query.pageNumber = pageNumber;
     query.pageSize = 10;
-
+    console.log(query);
     itemsService
       .getItems(query)
       .then((result) => {

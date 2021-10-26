@@ -16,7 +16,8 @@ export const List = () => {
     maxPrice: null,
     startTime: null,
     endTime: null,
-    subCategoryId: null,
+    categoryId: null,
+    subCategoryId: null
   });
 
   let { subCategoryId } = useParams();
@@ -33,11 +34,9 @@ export const List = () => {
   } = useItemsSearch(query, pageNumber, setPageNumber);
 
   useEffect(() => {
-    if (state.subCategoryId !== subCategoryId) {
-      setState((prev) => ({ ...prev, subCategoryId }));
-    } else makeRequest();
+    makeRequest(); 
     // eslint-disable-next-line
-  }, [subCategoryId, makeRequest]);
+  }, [query, makeRequest]);
 
   return (
     <Fragment>

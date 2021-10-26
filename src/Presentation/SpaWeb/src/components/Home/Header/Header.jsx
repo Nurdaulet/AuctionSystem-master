@@ -76,7 +76,7 @@ export const Header = () => {
               );
             })
           )}
-          <NavDropdown id="more_items" title={"More"} onClick={() => history.push("/items")}></NavDropdown>
+{isLoading ? null : <NavDropdown id="more_items" title={"More"} onClick={() => history.push("/items")}></NavDropdown>}
         </Nav>    
       </Navbar.Collapse>
     </Navbar>

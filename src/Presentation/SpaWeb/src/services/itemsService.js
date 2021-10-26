@@ -98,6 +98,13 @@ const getItemById = (id) => {
 };
 
 const createItem = (body) => {
+  for (var value of body.keys()) {
+    console.log(value);
+  }
+  // Display the values
+for (var value of body.values()) {
+  console.log(value);
+}
   return api
     .post(process.env.REACT_APP_API_ITEMS_ENDPOINT, body)
     .then((response) => response);

@@ -17,7 +17,7 @@ export function ProvideBalance({ children }) {
 
 function useProvideBalance() {
     const auth = useAuth();
-    console.log(auth?.user?.balance);
+  //  console.log(auth?.user?.balance);
     const [balance, setBalance] = useState(auth?.user?.balance);
 
     // useEffect(() => {

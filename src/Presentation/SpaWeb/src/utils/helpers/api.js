@@ -47,6 +47,7 @@ export const setupAxiosInterceptor = (signOut) => {
       }
 
       if (error.response.status === 401 && !error.config._retry) {
+        console.log("we are here");
         return getAuthToken().then((response) => {
           setUserInLocalStorage(response);
           error.response.config.__isRetryRequest = true;
