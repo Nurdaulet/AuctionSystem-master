@@ -54,6 +54,10 @@
                 .IsRequired();
 
             builder
+                .Property(p => p.CategoryId)
+                .IsRequired();
+
+            builder
                 .HasMany(b => b.Bids)
                 .WithOne(i => i.Item)
                 .HasForeignKey(i => i.ItemId)

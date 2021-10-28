@@ -38,7 +38,8 @@
 
             if (!await this.context
                 .SubCategories
-                .AnyAsync(c => c.Id == request.SubCategoryId, cancellationToken))
+                .AnyAsync(c => c.Id == request.SubCategoryId, cancellationToken) || 
+                !await this.context.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken))
             {
                 throw new BadRequestException(ExceptionMessages.Item.SubCategoryDoesNotExist);
             }
@@ -50,6 +51,7 @@
             item.StartTime = request.StartTime.ToUniversalTime();
             item.EndTime = request.EndTime.ToUniversalTime();
             item.SubCategoryId = request.SubCategoryId;
+            item.CategoryId = request.CategoryId;
 
             this.context.Items.Update(item);
             await this.context.SaveChangesAsync(cancellationToken);

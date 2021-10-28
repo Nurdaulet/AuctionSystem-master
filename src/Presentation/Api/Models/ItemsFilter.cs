@@ -10,6 +10,12 @@
     {
         private const string DecimalMaxValue = "79228162514264337593543950335";
 
+        [FromQuery(Name = "categoryId")]
+        public Guid? CategoryId { get; set; }
+
+        [FromQuery(Name = "subCategoryId")]
+        public Guid? SubCategoryId { get; set; }
+
         [FromQuery(Name = "title")]
         public string Title { get; set; }
 
@@ -37,7 +43,5 @@
         [Range(1, int.MaxValue)]
         public int? MinimumPicturesCount { get; set; }
 
-        [FromQuery(Name = "subCategoryId")]
-        public Guid SubCategoryId { get; set; }
     }
 }

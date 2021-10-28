@@ -117,7 +117,8 @@
             IUserManager manager,
             CancellationToken cancellationToken)
         {
-            if (!dbContext.Items.Any())
+            //if (!dbContext.Items.Any())
+            if(false)
             {
                 var random = new Random();
                 var allItems = new List<Item>();

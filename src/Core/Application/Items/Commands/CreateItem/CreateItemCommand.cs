@@ -25,6 +25,8 @@
 
         public Guid SubCategoryId { get; set; }
 
+        public Guid CategoryId { get; set; }
+
         public ICollection<IFormFile> Pictures { get; set; } = new HashSet<IFormFile>();
 
         public void ConfigureMapping(Profile mapper)

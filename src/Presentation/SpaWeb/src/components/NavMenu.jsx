@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
+import { Nav, Navbar, Container, NavDropdown, Button } from "react-bootstrap";
 import { history } from "..";
 import { useAuth } from "../utils/hooks/authHook";
 import { useBalance } from "../utils/hooks/balance_context";
@@ -21,7 +21,8 @@ export const NavMenu = () => {
               <Nav.Link onClick={() => history.push("/items")}>Items</Nav.Link>
               <Nav.Link onClick={() => history.push("/contact")}>
                 Contact us
-              </Nav.Link>
+              </Nav.Link>\
+              <Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>
             </Nav>
             {auth.user ? (
               <Nav>
@@ -43,14 +44,14 @@ export const NavMenu = () => {
                   ) : (
                       ""
                     )}
-                  <NavDropdown.Item
+                  {/* <NavDropdown.Item
                     onClick={() => {
                       history.push("/items/create");
                     }}
                   >
                     Create Item
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
+                  </NavDropdown.Item> 
+                  <NavDropdown.Divider />*/}
                   <NavDropdown.Item
                     onClick={() => {
                       auth.signOut();

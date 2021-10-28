@@ -34,7 +34,8 @@
             CancellationToken cancellationToken)
         {
             if (this.userService.UserId == null
-                || !await this.context.SubCategories.AnyAsync(c => c.Id == request.SubCategoryId, cancellationToken))
+                || !await this.context.SubCategories.AnyAsync(c => c.Id == request.SubCategoryId, cancellationToken)
+                || !await this.context.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken))
             {
                 throw new BadRequestException(ExceptionMessages.Item.CreateItemErrorMessage);
             }

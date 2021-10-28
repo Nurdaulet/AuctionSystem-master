@@ -62,7 +62,7 @@ export const Search = ({ loading, state, setState }) => {
               <Form.Label>Title</Form.Label>
               <Form.Control
                 onChange={(e) => {
-                  const value = e.target.value;
+                  let value = e.target.value;
                   setState((prev) => ({ ...prev, title: value }));
                 }}
                 type="input"
@@ -78,16 +78,22 @@ export const Search = ({ loading, state, setState }) => {
                   as="select"
                   value={state.categoryId ?? ""}
                   onChange={(e) => {      
-                    if(e.target.value !== "Select a make"){
+                    if(e.target.value !== "All"){
+                      console.log(e.target.value);
                       history.replace(`/items/${e.target.value}`);
+                    }else{
+                      history.replace("/items");
                     }
-                    const value = e.target.value;
+                    let value = e.target.value;
+                    if(value === "All"){
+                      value = null;
+                    }
                     setState((prev) => ({ ...prev, categoryId: value }));
                     setSelectedView(e.target.value);        
                   }}
                 >
                   <option onClick={() => history.replace("/items")}>
-                    Select make
+                    All
                   </option>
                   {categories.map((category, index) => {
                     return (
@@ -113,15 +119,20 @@ export const Search = ({ loading, state, setState }) => {
                   as="select"
                   value={state.subCategoryId ?? ""}
                   onChange={(e) => {      
-                    if(e.target.value !== "Select a model"){
+                    if(e.target.value !== "All"){
                       history.replace(`/items/${e.target.value}`);
+                    }else{
+                      history.replace(`/items/${selectedView}`);
                     }
-                    const value = e.target.value;
+                    let value = e.target.value;
+                    if(value === "All"){
+                      value = null;
+                    }
                     setState((prev) => ({ ...prev, subCategoryId: value }));    
                   }}
                 >
                   <option>
-                    Select model
+                    All
                   </option>
                   {categories.filter(({id}) => id === selectedView).map((category) => {
                     return category.subCategories.map((subCategory, index) => {

@@ -105,12 +105,16 @@
             {
                 queryable = queryable.Where(i => i.Pictures.Count >= filters.MinimumPicturesCount);
             }
+            
+            if (filters?.CategoryId != null && filters?.CategoryId != Guid.Empty)
+            {
+                queryable = queryable.Where(i => i.CategoryId == filters.CategoryId);
+            }
 
-            if (filters?.SubCategoryId != Guid.Empty)
+            if (filters?.SubCategoryId != null && filters?.SubCategoryId != Guid.Empty)
             {
                 queryable = queryable.Where(i => i.SubCategoryId == filters.SubCategoryId);
             }
-
             return queryable;
         }
     }

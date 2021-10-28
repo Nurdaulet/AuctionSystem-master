@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using Common;
 
     public class Item : AuditableEntity
@@ -17,10 +18,11 @@
 
         public string UserId { get; set; }
         public AuctionUser User { get; set; }
-
+        [ForeignKey("Category")]
+        public Guid? CategoryId { get; set; }
+        public Category Category { get; set; }
         public Guid SubCategoryId { get; set; }
         public SubCategory SubCategory { get; set; }
-
         public ICollection<Bid> Bids { get; set; } = new HashSet<Bid>();
         public ICollection<Picture> Pictures { get; set; } = new HashSet<Picture>();
     }
