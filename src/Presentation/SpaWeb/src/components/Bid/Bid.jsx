@@ -26,7 +26,7 @@ export const Bid = ({
   const balanceData = useBalance();
   const [isLoading, setIsLoading] = useState(false);
   const [connection] = useState(() =>
-    new HubConnectionBuilder().withUrl("https://localhost:5010/bidHub").build()
+    new HubConnectionBuilder().withUrl("https://localhost:5001/bidHub").build()
   );
   const [highestBid, setHighestBid] = useState(0);
   const [nextBidMinimumAmount, setNextBidMinimumAmount] = useState();
@@ -65,8 +65,9 @@ export const Bid = ({
 
     setIsLoading(true);
     connection
-      .invoke("CreateBidAsync", parseFloat(amount), itemId).then(() => {
-        balanceData.changeBalance();
+      .invoke("CreateBidAsync", parseFloat(amount), itemId).then((response) => {
+        console.log(response);
+        balanceData.changeBalance(amount);
       })
       .catch(() => {
         toast.error(

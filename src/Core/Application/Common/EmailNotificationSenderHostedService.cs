@@ -57,6 +57,7 @@ namespace Application.Common
         private async void DoWork(object state)
         {
             this.logger.LogInformation("Email notification Background Service is working.");
+            await this.ReturnBalanceOfUsers();
             await this.SendEmailToTheWinnersOfGivenBids();
         }
 
@@ -142,6 +143,55 @@ namespace Application.Common
             }
         }
 
+        private async Task ReturnBalanceOfUsers()
+        {
+            using var scope = this.scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<IAuctionSystemDbContext>();
+            var items = await context.Items
+                .Where(i => i.Bids.Count > 1)
+                .Select(i => new ItemDto
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    IsEmailSent = i.IsEmailSent,
+                    WinnerAmount = i.Bids.Max(b => b.Amount),
+                    UserEmail = i.User.Email,
+                    UserFullName = i.User.FullName
+                })
+                .ToListAsync();
+
+            foreach (var item in items)
+            {
+                var looserBids = await context.Bids
+                    .Where(b => b.Amount != item.WinnerAmount && b.ItemId == item.Id && !b.IsReturned).ToListAsync();
+
+                foreach (var looserBid in looserBids)
+                {
+                    try
+                    {
+                        var saldo = await context.SaldoUsers.Where(x => x.UserId == looserBid.UserId).SingleOrDefaultAsync();
+                        if (saldo == null)
+                        {
+                            continue;
+                        }
+
+                        saldo.Saldo = saldo.Saldo + looserBid.Amount;
+                        looserBid.IsReturned = true;
+                        looserBid.LastModifiedBy = "RobotX";
+                        context.Bids.Update(looserBid);
+                        context.SaldoUsers.Update(saldo);
+                        await context.SaveChangesAsync(CancellationToken.None);
+                        this.logger.LogInformation(string.Format("Returning looser amount", this.dateTime.UtcNow, looserBid.ItemId,
+                            item.Title, looserBid.Amount));
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogInformation(string.Format(ExceptionMessage, ex.Message));
+                    }
+                }
+            }
+        }
+
         private class ItemDto
         {
             public Guid Id { get; set; }
@@ -151,6 +201,7 @@ namespace Application.Common
             public bool IsEmailSent { get; set; }
 
             public decimal WinnerAmount { get; set; }
+            public decimal LoserAmount { get; set; }
 
             public string UserEmail { get; set; }
 

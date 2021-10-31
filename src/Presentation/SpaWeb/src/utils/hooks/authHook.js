@@ -5,7 +5,6 @@ import {
   removeUserFromLocalStorage,
   getUserFromLocalStorage,
 } from "../helpers/localStorage";
-
 const authContext = createContext();
 
 export function ProvideAuth({ children }) {
@@ -24,7 +23,6 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (user === null) {
       setUser(getUserFromLocalStorage());

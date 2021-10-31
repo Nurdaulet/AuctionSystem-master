@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Nav, Navbar, Container, NavDropdown, Button } from "react-bootstrap";
 import { history } from "..";
 import { useAuth } from "../utils/hooks/authHook";
@@ -10,6 +10,9 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 export const NavMenu = () => {
   const balance = useBalance();
   const auth = useAuth();
+  // useEffect(() => {
+  //   balance.changeBalance();
+  // }, []); 
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -22,13 +25,13 @@ export const NavMenu = () => {
               <Nav.Link onClick={() => history.push("/contact")}>
                 Contact us
               </Nav.Link>\
-              <Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>
+              {auth.user ? (<Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>):(<Fragment></Fragment>)}
             </Nav>
             {auth.user ? (
               <Nav>
-                <Navbar.Text>
+                <Nav.Link onClick={() => balance.changeBalance()}>
                   Balance: {balance.balance}
-                </Navbar.Text>
+                </Nav.Link>
                 <NavDropdown
                   title={<FontAwesomeIcon icon={faUser} />}
                   style={{ textColor: "white" }}
