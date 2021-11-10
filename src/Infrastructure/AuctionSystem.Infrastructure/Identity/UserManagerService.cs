@@ -229,8 +229,15 @@
                 .SaldoUsers
                 .Where(u => u.UserId == userId)
                 .SingleOrDefaultAsync();
-
-            return saldoUser.Saldo;
+            if(saldoUser == null){
+                await this.context.SaldoUsers.AddAsync(new SaldoUser
+                    {
+                        Saldo = 0,
+                        UserId = userId,
+                    });
+                await this.context.SaveChangesAsync(CancellationToken.None);
+            }
+            return saldoUser?.Saldo ?? 0;
         }
 
         public async Task<string> GenerateEmailConfirmationCode(string email)

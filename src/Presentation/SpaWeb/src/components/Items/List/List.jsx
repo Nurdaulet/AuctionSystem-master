@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { Header } from "./Header/Header";
 
 export const List = () => {
+
+  let { categoryId, subCategoryId } = useParams();
   const [state, setState] = useState({
     title: null,
     getLiveItems: true,
@@ -16,11 +18,9 @@ export const List = () => {
     maxPrice: null,
     startTime: null,
     endTime: null,
-    categoryId: null,
-    subCategoryId: null
+    categoryId: categoryId ?? null,
+    subCategoryId: subCategoryId ?? null
   });
-
-  let { subCategoryId } = useParams();
 
   const [pageNumber, setPageNumber] = useState(1);
   const query = useDebounce(state, 500);

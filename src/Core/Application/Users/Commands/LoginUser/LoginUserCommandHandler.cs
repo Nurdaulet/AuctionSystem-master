@@ -1,6 +1,6 @@
 ﻿namespace Application.Users.Commands.LoginUser
 {
-    using System.Linq;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Common;
@@ -35,11 +35,13 @@
 
             if (!result.Succeeded && result.ErrorType == ErrorType.General)
             {
+                Console.WriteLine("Here");
                 throw new BadRequestException(result.Error);
             }
-
+            Console.WriteLine("Pass Here " + userId + " username " + request.Email);
             var model = await this.mediator
                 .Send(new GenerateJwtTokenCommand(userId, request.Email), cancellationToken);
+                Console.WriteLine("Pass Here 2");
             return new Response<AuthSuccessResponse>(model);
         }
     }

@@ -5,11 +5,44 @@ import { useAuth } from "../utils/hooks/authHook";
 import { useBalance } from "../utils/hooks/balance_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { makeStyles } from "@material-ui/core";
+import { Autorenew } from "@material-ui/icons";
+import clsx from "clsx";
 
+const useStyles = makeStyles((theme) => ({
+  refresh: {
+    cursor: "pointer",
+    margin: "auto",
+    "&.spin": {
+      animation: "$spin 1s 1",
+      pointerEvents: 'none'
+    }
+  },
+  "@keyframes spin": {
+    "0%": {
+      transform: "rotate(0deg)"
+    },
+    "100%": {
+      transform: "rotate(360deg)"
+    }
+  }
+}));
 
 export const NavMenu = () => {
   const balance = useBalance();
   const auth = useAuth();
+
+  const [spin, setSpin] = React.useState(false);
+  const classes = useStyles();
+
+  const refreshCanvas = () => {
+    setSpin(true);
+    balance.changeBalance();
+    setTimeout(() => {
+      setSpin(false);
+    }, 1000);
+  };
+
   // useEffect(() => {
   //   balance.changeBalance();
   // }, []); 
@@ -21,17 +54,26 @@ export const NavMenu = () => {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => history.push("/items")}>Items</Nav.Link>
+              <Nav.Link onClick={() => history.push("/items/search")}>Items</Nav.Link>
               <Nav.Link onClick={() => history.push("/contact")}>
                 Contact us
               </Nav.Link>\
-              {auth.user ? (<Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>):(<Fragment></Fragment>)}
+              {auth.user ? (<Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>) : (<Fragment></Fragment>)}
             </Nav>
             {auth.user ? (
               <Nav>
-                <Nav.Link onClick={() => balance.changeBalance()}>
+                <Nav.Link>
                   Balance: {balance.balance}
+                  <Autorenew
+                  className={clsx({
+                    [classes.refresh]: true,
+                    spin: spin
+                  })}
+                  onClick={refreshCanvas}
+                  spin={360}
+                />
                 </Nav.Link>
+                
                 <NavDropdown
                   title={<FontAwesomeIcon icon={faUser} />}
                   style={{ textColor: "white" }}
@@ -45,8 +87,8 @@ export const NavMenu = () => {
                       Administration
                     </NavDropdown.Item>
                   ) : (
-                      ""
-                    )}
+                    ""
+                  )}
                   {/* <NavDropdown.Item
                     onClick={() => {
                       history.push("/items/create");
@@ -66,17 +108,17 @@ export const NavMenu = () => {
                 </NavDropdown>
               </Nav>
             ) : (
-                <Fragment>
-                  <Nav>
-                    <Nav.Link onClick={() => history.push("/sign-up")}>
-                      Sign up
+              <Fragment>
+                <Nav>
+                  <Nav.Link onClick={() => history.push("/sign-up")}>
+                    Sign up
                   </Nav.Link>
-                    <Nav.Link onClick={() => history.push("/sign-in")}>
-                      Login
+                  <Nav.Link onClick={() => history.push("/sign-in")}>
+                    Login
                   </Nav.Link>
-                  </Nav>
-                </Fragment>
-              )}
+                </Nav>
+              </Fragment>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

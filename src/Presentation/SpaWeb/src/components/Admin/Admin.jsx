@@ -3,6 +3,7 @@ import adminService from "../../services/adminService";
 import { Spinner, Table, Form } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +88,8 @@ export const Admin = () => {
             <th>Roles</th>
             <th>Add to role</th>
             <th>Remove from role</th>
+            <th>Balance</th>
+            <th>Control</th>
           </tr>
         </thead>
         <tbody>
@@ -126,6 +129,23 @@ export const Admin = () => {
                       })}
                     </Form.Control>
                   </Form.Group>
+                </td>
+                <td>
+                  {user.balance}
+                </td>
+                <td>
+                  {
+                    user.currentRoles.length !== 0 ? "" :
+                      <Fragment>
+                        <Link className="btn btn-secondary" to={"/items/search"}>
+                          Topup History
+                        </Link>
+                        <br/> <br/>
+                        <Link className="btn btn-success" to={"/items/search"}>
+                          New Top up
+                        </Link>
+                      </Fragment>
+                  }
                 </td>
               </tr>
             );

@@ -72,7 +72,7 @@ export const LiveItems = () => {
           </div>
           {items.length >= 10 ? (
             <div className="text-center pt-3 pb-4">
-              <Link className="btn btn-primary" to={"/items"}>
+              <Link className="btn btn-primary" to={"/items/search"}>
                 View more items
               </Link>
             </div>

@@ -23,7 +23,6 @@
 
         Task<Result> AddToRoleAsync(string email, string role, string currentUserId);
         Task<decimal> GetUserBalanceAsync(string userId);
-
         Task<IList<string>> GetUserRolesAsync(string userId);
 
         Task<string> GetFirstUserId();

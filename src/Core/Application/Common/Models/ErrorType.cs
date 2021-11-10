@@ -6,4 +6,10 @@ namespace Application.Common.Models
         TokenExpired,
         AccountNotConfirmed,
     }
+
+    public class UserIdWithBalance
+    {
+        public string UserId { get; set; }
+        public decimal Balance { get; set; }
+    }
 }

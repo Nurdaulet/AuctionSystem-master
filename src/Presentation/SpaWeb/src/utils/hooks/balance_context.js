@@ -26,7 +26,6 @@ function useProvideBalance() {
       }, [auth]);
 
     const changeBalance = () => {
-        console.log("hereeee");
         if(!auth?.user)
             return;          
         balanceService.getLastBalance(auth?.user.id).then((response) => {

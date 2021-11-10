@@ -34,6 +34,7 @@
             var totalUsersCount = await this.context.Users.CountAsync(cancellationToken);
 
             var adminIds = await this.userManager.GetUsersInRoleAsync(AppConstants.AdministratorRole);
+            var userSaldos = await this.context.SaldoUsers.ToListAsync();
 
             if (request?.Filters == null)
             {
@@ -43,7 +44,7 @@
                     .ProjectTo<ListAllUsersResponseModel>(this.mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken), totalUsersCount);
 
-                AddUserRoles(pagedUsers.Data, adminIds);
+                AddUserRolesAndBalance(pagedUsers.Data, adminIds, userSaldos);
                 return pagedUsers;
             }
 
@@ -55,12 +56,12 @@
                 .ProjectTo<ListAllUsersResponseModel>(this.mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
             var result = PaginationHelper.CreatePaginatedResponse(request, users, totalUsersCount);
-            AddUserRoles(users, adminIds);
+            AddUserRolesAndBalance(users, adminIds, userSaldos);
 
             return result;
         }
 
-        private static void AddUserRoles(IEnumerable<ListAllUsersResponseModel> users, IEnumerable<string> adminIds)
+        private static void AddUserRolesAndBalance(IEnumerable<ListAllUsersResponseModel> users, IEnumerable<string> adminIds, List<SaldoUser> usersSaldo)
         {
             foreach (var user in users)
             {
@@ -75,7 +76,7 @@
                 {
                     nonCurrentRoles.Add(AppConstants.AdministratorRole);
                 }
-
+                user.Balance = usersSaldo.Where(x => x.UserId == user.Id).FirstOrDefault().Saldo;
                 user.CurrentRoles = currentUserRoles;
                 user.NonCurrentRoles = nonCurrentRoles;
             }

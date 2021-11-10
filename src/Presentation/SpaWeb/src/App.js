@@ -38,8 +38,8 @@ function App() {
               adminOnly={true}
               component={Admin}
             />
-            <Route exact path="/items/:subCategoryId?" component={List} />
-            <Route path="/items/:slug?/:id" component={Details} />
+            <Route exact path="/items/search/:categoryId?/:subCategoryId?" component={List} />
+            <Route path="/items/:slug/:id" component={Details} />
             <Route path="*" component={NotFound} />
           </Switch>
         </Container>

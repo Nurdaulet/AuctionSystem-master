@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import bidService from "../../services/bidService";
 import { useCallback } from "react";
 import { useBalance } from "../../utils/hooks/balance_context";
-
+import { useAuth } from "../../utils/hooks/authHook";
 export const Bid = ({
   itemId,
   startingPrice,
@@ -24,12 +24,14 @@ export const Bid = ({
   CounterContainer,
 }) => {
   const balanceData = useBalance();
+  const auth = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [connection] = useState(() =>
     new HubConnectionBuilder().withUrl("https://localhost:5001/bidHub").build()
   );
   const [highestBid, setHighestBid] = useState(0);
   const [nextBidMinimumAmount, setNextBidMinimumAmount] = useState();
+  const [winnerUserId, setWinnerUserId] = useState();
   const [biddingAmount, setBiddingAmount] = useState(0);
   const [messages, setMessages] = useState([]);
 
@@ -66,7 +68,6 @@ export const Bid = ({
     setIsLoading(true);
     connection
       .invoke("CreateBidAsync", parseFloat(amount), itemId).then((response) => {
-        console.log(response);
         balanceData.changeBalance(amount);
       })
       .catch(() => {
@@ -79,13 +80,19 @@ export const Bid = ({
 
 
   const fetchHighestBid = useCallback(() => {
+    setIsLoading(true);
     bidService.getHighestBid(itemId).then((response) => {
       const amount = response.data.data?.amount;
+      const winUserId = response.data.data?.userId;
       let highestBid;
       if (!amount) {
         highestBid = startingPrice;
       } else {
         highestBid = response.data.data.amount;
+      }
+
+      if (winUserId) {
+        setWinnerUserId(winUserId);
       }
 
       const nextBiddingAmount = parseFloat(
@@ -94,6 +101,8 @@ export const Bid = ({
       setHighestBid(highestBid);
       setNextBidMinimumAmount(nextBiddingAmount);
     });
+    setIsLoading(false);
+
   }, [itemId, startingPrice, minPriceIncrease]);
 
 
@@ -123,7 +132,7 @@ export const Bid = ({
           bidAmount + minPriceIncrease
         ).toFixed(2);
 
-
+        setWinnerUserId(userId);
         setHighestBid(bidAmount);
         setNextBidMinimumAmount(nextBiddingAmount);
       });
@@ -189,8 +198,16 @@ export const Bid = ({
             </InputGroup>
             <div className="text-center mb-2">
               <div>
-                {!isLoading ? (
+                {!isLoading ? auth.user.id == winnerUserId ? (<Button
+      block
+      variant="secondary"
+      size="lg"
+      active="false"
+    >
+      You are winning!
+    </Button>) :  (
                   <BidHigherButton
+                    isLoading = {isLoading}
                     handleOnClick={handleOnClick}
                     amount={nextBidMinimumAmount}
                   />

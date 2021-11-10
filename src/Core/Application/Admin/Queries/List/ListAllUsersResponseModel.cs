@@ -9,7 +9,7 @@
         public string Id { get; set; }
 
         public string Email { get; set; }
-
+        public decimal Balance { get; set; }
         public string FullName { get; set; }
 
         public ICollection<string> CurrentRoles { get; set; }

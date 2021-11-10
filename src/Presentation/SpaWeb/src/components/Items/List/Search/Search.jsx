@@ -17,7 +17,7 @@ export const Search = ({ loading, state, setState }) => {
     moment().add(2, "minutes").toDate()
   );
 
-  const [selectedView, setSelectedView] = useState('');
+  const [selectedView, setSelectedView] = useState(state.categoryId ?? '');
 
   const [endTime, setEndTime] = useState(
     moment().add(1, "months").add(10, "m").toDate()
@@ -78,21 +78,20 @@ export const Search = ({ loading, state, setState }) => {
                   as="select"
                   value={state.categoryId ?? ""}
                   onChange={(e) => {      
-                    if(e.target.value !== "All"){
-                      console.log(e.target.value);
-                      history.replace(`/items/${e.target.value}`);
-                    }else{
-                      history.replace("/items");
+                    if (e.target.value !== "All"){
+                      history.replace(`/items/search/${e.target.value}`);
+                    } else {
+                      history.replace("/items/search");
                     }
                     let value = e.target.value;
                     if(value === "All"){
                       value = null;
                     }
-                    setState((prev) => ({ ...prev, categoryId: value }));
+                    setState((prev) => ({ ...prev, categoryId: value, subCategoryId: null }));
                     setSelectedView(e.target.value);        
                   }}
                 >
-                  <option onClick={() => history.replace("/items")}>
+                  <option onClick={() => history.replace("/items/search")}>
                     All
                   </option>
                   {categories.map((category, index) => {
@@ -118,11 +117,11 @@ export const Search = ({ loading, state, setState }) => {
                 <Form.Control
                   as="select"
                   value={state.subCategoryId ?? ""}
-                  onChange={(e) => {      
-                    if(e.target.value !== "All"){
-                      history.replace(`/items/${e.target.value}`);
-                    }else{
-                      history.replace(`/items/${selectedView}`);
+                  onChange={(e) => {    
+                    if (e.target.value !== "All"){
+                      history.replace(`/items/search/${selectedView}/${e.target.value}`);
+                    } else {
+                      history.replace(`/items/search/${selectedView}`);
                     }
                     let value = e.target.value;
                     if(value === "All"){

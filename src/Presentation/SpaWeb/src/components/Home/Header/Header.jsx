@@ -32,9 +32,6 @@ export const Header = () => {
       [e.target.id]: false,
     });
   };
-  const divStyle = {
-    
-  };
 
   return (
     <Navbar className="shadow mt-3" bg="light" expand="lg">
@@ -53,6 +50,9 @@ export const Header = () => {
                   key={index}
                   id={index}
                   title={category.name}
+                  // onClick={(e) => {
+                  //   history.push(`/search/${category.id}`);
+                  // }}
                   show={hoveredDropdowns[index]}
                   onMouseOver={(e) => handleMouseOver(e)}
                   onMouseOut={(e) => handleMouseOut(e)}
@@ -63,7 +63,7 @@ export const Header = () => {
                         id={subcategory.id}
                         key={index}
                         onClick={(e) => {
-                          history.push(`/items/${e.target.id}`);
+                          history.push(`/items/search/${category.id}/${e.target.id}`);
                         }}
                       >
                         {subcategory.name}
@@ -76,7 +76,7 @@ export const Header = () => {
               );
             })
           )}
-{isLoading ? null : <NavDropdown id="more_items" title={"More"} onClick={() => history.push("/items")}></NavDropdown>}
+{isLoading ? null : <NavDropdown id="more_items" title={"More"} onClick={() => history.push("/items/search")}></NavDropdown>}
         </Nav>    
       </Navbar.Collapse>
     </Navbar>

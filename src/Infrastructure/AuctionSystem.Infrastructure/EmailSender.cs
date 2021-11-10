@@ -1,5 +1,6 @@
 ﻿namespace AuctionSystem.Infrastructure
 {
+    using System;
     using System.Net;
     using System.Threading.Tasks;
     using Application.AppSettingsModels;
@@ -24,7 +25,7 @@
             var to = new EmailAddress(receiver, receiver);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, htmlMessage, htmlMessage);
             var isSuccessful = await client.SendEmailAsync(msg);
-
+            Console.WriteLine(await isSuccessful.Body.ReadAsStringAsync());
             return isSuccessful.StatusCode == HttpStatusCode.Accepted;
         }
     }
