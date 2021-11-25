@@ -15,34 +15,44 @@ import { Create } from "./components/Items/Create/Create";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Edit } from "./components/Items/Edit/Edit";
 import { Admin } from "./components/Admin/Admin";
+import { TopUpList } from "./components/Admin/TopUpList";
+import { MyContainer } from "./components/Items/List/Container/MyContainer";
 import "react-toastify/dist/ReactToastify.css";
-import {ProvideBalance} from "./utils/hooks/balance_context";
+import { ProvideBalance } from "./utils/hooks/balance_context";
 
 function App() {
   return (
     <Fragment>
       <ProvideAuth>
         <ProvideBalance>
-        <NavMenu />
-        <Container className="pt-3">
-          <ToastContainer />
-          <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
-            <Route exact path="/sign-in" component={Login} />
-            <Route exact path="/sign-up" component={Register} />
-            <Route exact path="/error/network" component={NetworkError} />
-            <PrivateRoute exact path="/items/create" component={Create} />
-            <PrivateRoute path="/items/edit/:slug/:id" component={Edit} />
-            <PrivateRoute
-              path="/administration"
-              adminOnly={true}
-              component={Admin}
-            />
-            <Route exact path="/items/search/:categoryId?/:subCategoryId?" component={List} />
-            <Route path="/items/:slug/:id" component={Details} />
-            <Route path="*" component={NotFound} />
-          </Switch>
-        </Container>
+          <NavMenu />
+          <Container className="pt-3">
+            <ToastContainer />
+            <Switch>
+              <Route exact path={["/", "/home"]} component={Home} />
+              <Route exact path="/sign-in" component={Login} />
+              <Route exact path="/sign-up" component={Register} />
+              <Route exact path="/error/network" component={NetworkError} />
+              <PrivateRoute exact path="/items/create" component={Create} />
+              <PrivateRoute path="/items/edit/:slug/:id" component={Edit} />
+              <PrivateRoute
+                path="/administration"
+                adminOnly={true}
+                component={Admin}
+              />
+              <PrivateRoute
+                path="/topUpHistory/:userId"
+                component={TopUpList}
+              />
+              <PrivateRoute
+                path="/myWinList"
+                component={MyContainer}
+              />
+              <Route exact path="/items/search/:categoryId?/:subCategoryId?" component={List} />
+              <Route path="/items/:slug/:id" component={Details} />
+              <Route path="*" component={NotFound} />
+            </Switch>
+          </Container>
         </ProvideBalance>
       </ProvideAuth>
     </Fragment>

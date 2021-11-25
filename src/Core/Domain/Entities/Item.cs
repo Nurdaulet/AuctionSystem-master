@@ -23,6 +23,7 @@
         public Category Category { get; set; }
         public Guid SubCategoryId { get; set; }
         public SubCategory SubCategory { get; set; }
+        public string WinnerUserId { get; set; }
         public ICollection<Bid> Bids { get; set; } = new HashSet<Bid>();
         public ICollection<Picture> Pictures { get; set; } = new HashSet<Picture>();
     }

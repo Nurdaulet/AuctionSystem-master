@@ -6,6 +6,18 @@ const getUsers = (query) => {
     .then((response) => response);
 };
 
+const getTopUpList = (query, userId) => {
+  return api
+    .get(`${process.env.REACT_APP_API_TOPUP_ENDPOINT}/topUpHistory/${userId}`, { params: query })
+    .then((response) => response);
+};
+
+const makeTopUp = (userId, amount) => {
+  return api
+    .post(process.env.REACT_APP_API_TOPUP_ENDPOINT, { userId, amount })
+    .then((response) => response);
+};
+
 const addToRole = (email, role) => {
   return api
     .post(process.env.REACT_APP_API_ADMINISTRATION_ENDPOINT, {
@@ -27,4 +39,6 @@ export default {
   getUsers,
   addToRole,
   removeFromRole,
+  makeTopUp,
+  getTopUpList,
 };

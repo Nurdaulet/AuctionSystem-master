@@ -2,11 +2,11 @@ import React from "react";
 import "./Header.css";
 import { Dropdown } from "react-bootstrap";
 
-export const Header = ({ totalItemsCount }) => {
+export const Header = ({TextShown, totalItemsCount }) => {
   return (
     <div className="generic-header">
       <div>
-        <h4>All Items</h4>
+        <h4>{TextShown}</h4>
         <p>Total Listing Found: {totalItemsCount}</p>
       </div>
       <div className="generic-header-toolbar" role="toolbar">

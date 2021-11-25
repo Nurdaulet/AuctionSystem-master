@@ -18,7 +18,7 @@
         private readonly IAuctionSystemDbContext context;
         private readonly IMapper mapper;
         private readonly IUserManager userManager;
-
+ 
         public ListAllUsersQueryHandler(IAuctionSystemDbContext context, IMapper mapper, IUserManager userManager)
         {
             this.context = context;

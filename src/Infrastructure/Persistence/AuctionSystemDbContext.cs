@@ -31,6 +31,7 @@
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Bid> Bids { get; set; }
+        public DbSet<TransactionsNew> TransactionsNew { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<SaldoUser> SaldoUsers { get; set; }

@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.Common.Exceptions;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Common.Helpers;
@@ -20,11 +21,14 @@
         private readonly IDateTime dateTime;
         private readonly IMapper mapper;
 
-        public ListItemsQueryHandler(IAuctionSystemDbContext context, IDateTime dateTime, IMapper mapper)
+        private readonly ICurrentUserService currentUserService;
+
+        public ListItemsQueryHandler(IAuctionSystemDbContext context, IDateTime dateTime, IMapper mapper, ICurrentUserService currentUserService)
         {
             this.context = context;
             this.dateTime = dateTime;
             this.mapper = mapper;
+            this.currentUserService = currentUserService;
         }
 
         public async Task<PagedResponse<ListItemsResponseModel>> Handle(
@@ -48,7 +52,7 @@
                     .ToListAsync(cancellationToken), totalItemsCount);
             }
 
-            queryable = this.AddFiltersOnQuery(request.Filters, queryable);
+            queryable = this.AddFiltersOnQuery(request.Filters, queryable, currentUserService.UserId);
             totalItemsCount = await queryable.CountAsync(cancellationToken);
             var itemsList = await queryable
                 .Skip(skipCount)
@@ -63,8 +67,18 @@
             return result;
         }
 
-        private IQueryable<Item> AddFiltersOnQuery(ListAllItemsQueryFilter filters, IQueryable<Item> queryable)
+        private IQueryable<Item> AddFiltersOnQuery(ListAllItemsQueryFilter filters, IQueryable<Item> queryable, string userId = null)
         {
+            if (filters?.IsMine == true)
+            {
+                if (userId == null)
+                {
+                    throw new BadRequestException("UserId is null");
+                }
+                queryable = queryable.Where(i => i.EndTime <= this.dateTime.UtcNow && i.WinnerUserId == userId && i.Bids.Count >= 1);
+                return queryable;
+            }
+
             if (!string.IsNullOrEmpty(filters?.Title))
             {
                 queryable = queryable.Where(i => i.Title.ToLower().Contains(filters.Title.ToLower()));
@@ -105,7 +119,7 @@
             {
                 queryable = queryable.Where(i => i.Pictures.Count >= filters.MinimumPicturesCount);
             }
-            
+
             if (filters?.CategoryId != null && filters?.CategoryId != Guid.Empty)
             {
                 queryable = queryable.Where(i => i.CategoryId == filters.CategoryId);

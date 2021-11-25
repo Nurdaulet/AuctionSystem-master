@@ -43,7 +43,7 @@ export const List = () => {
       <Container>
         <Row>
           <Col lg={12}>
-            <Header totalItemsCount={totalItemsCount} />
+            <Header TextShown="All Items" totalItemsCount={totalItemsCount} />
           </Col>
           <Col lg={12}>
             <Row>

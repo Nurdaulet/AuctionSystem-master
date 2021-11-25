@@ -18,6 +18,8 @@
 
         public bool GetLiveItems { get; set; }
 
+        public bool IsMine { get; set; }
+
         public int? MinimumPicturesCount { get; set; }
 
         public Guid? CategoryId { get; set; }

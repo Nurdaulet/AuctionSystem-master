@@ -14,7 +14,7 @@
         DbSet<Item> Items { get; set; }
 
         DbSet<Bid> Bids { get; set; }
-
+        DbSet<TransactionsNew> TransactionsNew { get; set; }
         DbSet<Picture> Pictures { get; set; }
 
         DbSet<AuctionUser> Users { get; set; }

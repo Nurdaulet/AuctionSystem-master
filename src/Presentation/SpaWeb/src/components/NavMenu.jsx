@@ -89,14 +89,22 @@ export const NavMenu = () => {
                   ) : (
                     ""
                   )}
-                  {/* <NavDropdown.Item
+                  <NavDropdown.Item
                     onClick={() => {
-                      history.push("/items/create");
+                      history.push(`/topUpHistory/${auth.user.id}`);
                     }}
                   >
-                    Create Item
+                    My Top up
                   </NavDropdown.Item> 
-                  <NavDropdown.Divider />*/}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item
+                    onClick={() => {
+                      history.push(`/myWinList`);
+                    }}
+                  >
+                    My Win List
+                  </NavDropdown.Item> 
+                  <NavDropdown.Divider />
                   <NavDropdown.Item
                     onClick={() => {
                       auth.signOut();

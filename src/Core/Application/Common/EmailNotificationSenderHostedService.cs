@@ -100,7 +100,8 @@ namespace Application.Common
                     {
                         UserEmail = b.User.Email,
                         UserFullName = b.User.FullName,
-                        b.Amount
+                        b.Amount,
+                        UserId = b.UserId
                     })
                     .SingleOrDefaultAsync();
 
@@ -128,6 +129,7 @@ namespace Application.Common
                     }
 
                     dbItem.IsEmailSent = true;
+                    dbItem.WinnerUserId =  winnerBid.UserId;
                     context.Items.Update(dbItem);
                     await context.SaveChangesAsync(CancellationToken.None);
                     this.logger.LogInformation(string.Format(LogMessage, this.dateTime.UtcNow, winnerBid.UserEmail,

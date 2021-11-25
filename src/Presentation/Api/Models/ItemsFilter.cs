@@ -25,13 +25,16 @@
         [FromQuery(Name = "minPrice")]
         [Range(typeof(decimal), "0.01", DecimalMaxValue)]
         public decimal? MinPrice { get; set; }
-        
+
         [FromQuery(Name = "maxPrice")]
         [Range(typeof(decimal), "0.01", DecimalMaxValue)]
         public decimal? MaxPrice { get; set; }
 
         [FromQuery(Name = "getLiveItems")]
         public bool? GetLiveItems { get; set; }
+
+        [FromQuery(Name = "isMine")]
+        public bool? IsMine { get; set; }
 
         [FromQuery(Name = "startTime")]
         public DateTime? StartTime { get; set; }
