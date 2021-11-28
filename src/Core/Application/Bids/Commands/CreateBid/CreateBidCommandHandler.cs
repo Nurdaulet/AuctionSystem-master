@@ -39,6 +39,7 @@
             {
                 saldo.Saldo -= bid.Amount;
             }
+            bid.SaldoAmount = saldo.Saldo;
             await this.context.Bids.AddAsync(bid, cancellationToken);
             await this.context.SaveChangesAsync(cancellationToken);
 
