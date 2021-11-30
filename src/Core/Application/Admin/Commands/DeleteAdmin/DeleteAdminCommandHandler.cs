@@ -22,7 +22,7 @@
         public async Task<Unit> Handle(DeleteAdminCommand request, CancellationToken cancellationToken)
         {
             //TODO: Add User as default role in db
-            if (!request.Role.Equals(AppConstants.AdministratorRole))
+            if (!request.Role.Equals(AppConstants.AdministratorRole) && !request.Role.Equals(AppConstants.PlayerRole) && !request.Role.Equals(AppConstants.CreatorRole))
             {
                 throw new BadRequestException(ExceptionMessages.Admin.InvalidRole);
             }

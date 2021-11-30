@@ -115,6 +115,18 @@
             {
                 await this.roleManager.CreateAsync(new IdentityRole(AppConstants.AdministratorRole));
             }
+            var playerRoleExist = await this.roleManager.RoleExistsAsync(AppConstants.PlayerRole);
+
+            if (!playerRoleExist)
+            {
+                await this.roleManager.CreateAsync(new IdentityRole(AppConstants.PlayerRole));
+            }
+            var creatorRoleExist = await this.roleManager.RoleExistsAsync(AppConstants.CreatorRole);
+
+            if (!creatorRoleExist)
+            {
+                await this.roleManager.CreateAsync(new IdentityRole(AppConstants.CreatorRole));
+            }
         }
 
         public async Task AddToRoleAsync(AuctionUser user, string role) =>
@@ -229,12 +241,13 @@
                 .SaldoUsers
                 .Where(u => u.UserId == userId)
                 .SingleOrDefaultAsync();
-            if(saldoUser == null){
+            if (saldoUser == null)
+            {
                 await this.context.SaldoUsers.AddAsync(new SaldoUser
-                    {
-                        Saldo = 0,
-                        UserId = userId,
-                    });
+                {
+                    Saldo = 0,
+                    UserId = userId,
+                });
                 await this.context.SaveChangesAsync(CancellationToken.None);
             }
             return saldoUser?.Saldo ?? 0;

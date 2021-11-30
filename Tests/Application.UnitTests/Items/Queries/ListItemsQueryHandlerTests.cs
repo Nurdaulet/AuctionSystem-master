@@ -25,6 +25,9 @@
 
         private readonly ListItemsQueryHandler handler;
 
+        private readonly ICurrentUserService currentUserService;
+
+
         public ListItemsQueryHandlerTests(QueryTestFixture fixture)
         {
             this.context = fixture.Context;
@@ -35,7 +38,7 @@
             mockedDatetime.Setup(x => x.Now).Returns(DateTime.Now);
             this.dateTime = mockedDatetime.Object;
 
-            this.handler = new ListItemsQueryHandler(this.context, this.dateTime, this.mapper);
+            this.handler = new ListItemsQueryHandler(this.context, this.dateTime, this.mapper, this.currentUserService);
         }
 
         [Fact]

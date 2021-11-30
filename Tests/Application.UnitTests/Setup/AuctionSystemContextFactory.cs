@@ -85,6 +85,8 @@ namespace Application.UnitTests.Setup
                 });
 
             context.Roles.Add(new IdentityRole(AppConstants.AdministratorRole));
+            context.Roles.Add(new IdentityRole(AppConstants.PlayerRole));
+            context.Roles.Add(new IdentityRole(AppConstants.CreatorRole));
             context.SaveChanges();
         }
 
@@ -103,7 +105,7 @@ namespace Application.UnitTests.Setup
         private static void SeedPictures(AuctionSystemDbContext context)
         {
             context.Pictures.AddAsync(new Picture
-                { Id = DataConstants.SamplePictureId, ItemId = DataConstants.SampleItemId });
+            { Id = DataConstants.SamplePictureId, ItemId = DataConstants.SampleItemId });
             context.SaveChangesAsync(CancellationToken.None);
         }
 

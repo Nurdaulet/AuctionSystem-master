@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Application;
     using Application.Bids.Commands.CreateBid;
     using Application.Bids.Queries.Details;
     using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,7 @@
             StatusCodes.Status404NotFound,
             SwaggerDocumentation.BidConstants.NotFoundOnPostRequestDescriptionMessage,
             typeof(NotFoundErrorModel))]
+        [Authorize(Roles = AppConstants.PlayerRole)]
         public async Task<IActionResult> Post([FromBody] CreateBidCommand model)
         {
             await this.Mediator.Send(model);

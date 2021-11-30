@@ -86,7 +86,12 @@
         }
 
         private async Task SeedAdminRole()
-            => await this.userManager.CreateRoleAsync(new IdentityRole(AppConstants.AdministratorRole));
+        {
+            await this.userManager.CreateRoleAsync(new IdentityRole(AppConstants.AdministratorRole));
+            await this.userManager.CreateRoleAsync(new IdentityRole(AppConstants.CreatorRole));
+            await this.userManager.CreateRoleAsync(new IdentityRole(AppConstants.PlayerRole));
+        }
+
 
         private static async Task SeedCategories(IAuctionSystemDbContext dbContext, CancellationToken cancellationToken)
         {
@@ -118,7 +123,7 @@
             CancellationToken cancellationToken)
         {
             //if (!dbContext.Items.Any())
-            if(false)
+            if (false)
             {
                 var random = new Random();
                 var allItems = new List<Item>();

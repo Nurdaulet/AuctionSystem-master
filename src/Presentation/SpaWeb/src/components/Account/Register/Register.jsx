@@ -9,6 +9,7 @@ export const Register = () => {
     mode: "onblur",
   });
   const [showConfirmationPage, setShowConfirmationPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { touched } = formState;
   const password = watch("password");
@@ -16,9 +17,11 @@ export const Register = () => {
   const auth = useAuth();
 
   const onSubmit = (data) => {
+    setIsLoading(true);
     auth.signUp(data).then((response) => {
       setShowConfirmationPage(true);
     });
+    setIsLoading(false);
   };
 
   const hasError = (touched, errors) => {
@@ -140,7 +143,7 @@ export const Register = () => {
         )}
       </Form.Group>
 
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" disabled={isLoading}>
         Submit
       </Button>
     </Form>

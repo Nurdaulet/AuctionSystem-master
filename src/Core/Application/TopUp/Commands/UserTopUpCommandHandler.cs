@@ -6,6 +6,7 @@ namespace Application.TopUp.Commands
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.Common.Exceptions;
     using Application.Common.Interfaces;
     using AutoMapper;
     using Domain.Entities;
@@ -16,22 +17,25 @@ namespace Application.TopUp.Commands
     public class UserTopUpCommandHandler : IRequestHandler<UserTopUpCommand>
     {
         private readonly IAuctionSystemDbContext context;
-        private readonly ICurrentUserService currentUserService;
-        private readonly IDateTime dateTime;
+        private readonly IUserManager userManager;
         private readonly IMapper mapper;
 
         public UserTopUpCommandHandler(IAuctionSystemDbContext context,
             ICurrentUserService currentUserService,
-            IDateTime dateTime,
-            IMapper mapper)
+            IMapper mapper,
+            IUserManager userManager)
         {
             this.context = context;
-            this.currentUserService = currentUserService;
-            this.dateTime = dateTime;
+            this.userManager = userManager;
             this.mapper = mapper;
         }
         public async Task<Unit> Handle(UserTopUpCommand request, CancellationToken cancellationToken)
         {
+            var userRoles = await userManager.GetUserRolesAsync(request.UserId);
+            if (!userRoles.Contains(AppConstants.PlayerRole) || userRoles.Contains(AppConstants.AdministratorRole))
+            {
+                 throw new BadRequestException(ExceptionMessages.Admin.InvalidRole);
+            }
             var transactionNew = this.mapper.Map<TransactionsNew>(request);
             var saldo = await this.context.SaldoUsers.FirstOrDefaultAsync(x => x.UserId == request.UserId);
             if (saldo != null)

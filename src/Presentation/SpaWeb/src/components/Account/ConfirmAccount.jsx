@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { history } from "../..";
@@ -6,14 +6,16 @@ import { toast } from "react-toastify";
 
 export const ConfirmAccount = ({ auth, email }) => {
   const { register, handleSubmit } = useForm();
-
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = (data) => {
+    setIsLoading(true);
     auth.confirmAccount(data).then(() => {
       history.push("/");
       toast.success(
         "Your account has been confirmed successfully. You're now able to sign in."
       );
     });
+    setIsLoading(false);
   };
 
   return (
@@ -27,7 +29,7 @@ export const ConfirmAccount = ({ auth, email }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Form.Control.Feedback type="valid">
-          Please check your email for the verification code.
+          Please check your email and spam for the verification code.
         </Form.Control.Feedback>
         <Form.Group>
           <Form.Label>Verification Code - 4 digits</Form.Label>
@@ -45,7 +47,7 @@ export const ConfirmAccount = ({ auth, email }) => {
             defaultValue={email}
           ></Form.Control>
         </Form.Group>
-        <Button variant="outline-primary" type="submit">
+        <Button variant="outline-primary" type="submit" disabled={isLoading}>
           Submit
         </Button>
       </Form>

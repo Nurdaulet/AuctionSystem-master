@@ -35,13 +35,13 @@ export const Admin = () => {
     console.log(selectedUserId);
     console.log(data.startingPrice);
     adminService.makeTopUp(selectedUserId, data.startingPrice).then((response) => {
-      setShow(false);
       adminService.getUsers(paginationQuery).then((response) => {
         setUsers(response.data.data);
         setTotalPages(response.data.totalPages);
-        setIsLoading(false);
       });
     });
+    setShow(false);
+    setIsLoading(false);
   };
 
   const handlePageClick = (data) => {
@@ -94,7 +94,6 @@ export const Admin = () => {
           return user;
         }),
       ]);
-
       toast.success(`${email} has been successfully demoted from ${role}`);
     });
   };
@@ -157,70 +156,69 @@ export const Admin = () => {
                 </td>
                 <td>
                   {
-                    user.currentRoles.length !== 0 ? "" :
-                      <Fragment>
-                        <>
-                          <Button variant="secondary" onClick={() => history.replace(`/topUpHistory/${user.id}`)}>
-                            TopUp History
-                          </Button>
-                        </>
-                        <br /> <br />
-                        <>
-                          <Button variant="primary" onClick={() => handleShow(user.email, user.id)}>
-                            New TopUp
-                          </Button>
-                          <Modal show={show} onHide={handleClose}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Top Up for {selectedUserEmail}</Modal.Title>
-                            </Modal.Header>
-                            <Form
-                              onSubmit={handleSubmit(onSubmit)}
-                              style={{
-                                border: "1px solid #e3e6ef",
-                                background: "#fff",
-                                padding: "2rem",
-                              }}
-                            >
-                              <Modal.Body>
-                                <Form.Group controlId="startingPrice">
-                                  <Form.Label>Top Up Amount</Form.Label>
-                                  <InputGroup>
-                                    <InputGroup.Prepend>
-                                      <InputGroup.Text id="starting-price">
-                                        {process.env.REACT_APP_CURRENCY_SIGN}
-                                      </InputGroup.Text>
-                                    </InputGroup.Prepend>
-                                    <Form.Control
-                                      name="startingPrice"
-                                      type="number"
-                                      placeholder="100"
-                                      aria-describedby="starting-price"
-                                      ref={register({
-                                        required: "Amount field is required",
-                                        min: 0.01,
-                                        max: 1000000000,
-                                      })}
-                                    />
-                                  </InputGroup>
-                                  {errors.startingPrice && (
-                                    <Form.Control.Feedback type="invalid">
-                                      {errors.startingPrice.message}
-                                    </Form.Control.Feedback>
-                                  )}
-                                </Form.Group>
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
-                                  Close
-                                </Button>
-                                <Button variant="primary" type="submit">
-                                  Save Changes
-                                </Button>
-                              </Modal.Footer>
-                            </Form>
-                          </Modal>
-                        </>
-                      </Fragment>
+                    <Fragment>
+                      <>
+                        <Button variant="secondary" onClick={() => history.replace(`/topUpHistory/${user.id}`)}>
+                          TopUp History
+                        </Button>
+                      </>
+                      <br /> <br />
+                      <>
+                        <Button variant="primary" onClick={() => handleShow(user.email, user.id)}>
+                          New TopUp
+                        </Button>
+                        <Modal show={show} onHide={handleClose}>
+                          <Modal.Header closeButton>
+                            <Modal.Title>Top Up for {selectedUserEmail}</Modal.Title>
+                          </Modal.Header>
+                          <Form
+                            onSubmit={handleSubmit(onSubmit)}
+                            style={{
+                              border: "1px solid #e3e6ef",
+                              background: "#fff",
+                              padding: "2rem",
+                            }}
+                          >
+                            <Modal.Body>
+                              <Form.Group controlId="startingPrice">
+                                <Form.Label>Top Up Amount</Form.Label>
+                                <InputGroup>
+                                  <InputGroup.Prepend>
+                                    <InputGroup.Text id="starting-price">
+                                      {process.env.REACT_APP_CURRENCY_SIGN}
+                                    </InputGroup.Text>
+                                  </InputGroup.Prepend>
+                                  <Form.Control
+                                    name="startingPrice"
+                                    type="number"
+                                    placeholder="100"
+                                    aria-describedby="starting-price"
+                                    ref={register({
+                                      required: "Amount field is required",
+                                      min: 0.01,
+                                      max: 1000000000,
+                                    })}
+                                  />
+                                </InputGroup>
+                                {errors.startingPrice && (
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors.startingPrice.message}
+                                  </Form.Control.Feedback>
+                                )}
+                              </Form.Group>
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <Button variant="secondary" onClick={handleClose}>
+                                Close
+                              </Button>
+                              <Button variant="primary" type="submit">
+                                Save Changes
+                              </Button>
+                            </Modal.Footer>
+                          </Form>
+                        </Modal>
+                      </>
+                    </Fragment>
                   }
                 </td>
               </tr>

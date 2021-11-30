@@ -18,7 +18,7 @@
         private readonly IAuctionSystemDbContext context;
         private readonly IMapper mapper;
         private readonly IUserManager userManager;
- 
+
         public ListAllUsersQueryHandler(IAuctionSystemDbContext context, IMapper mapper, IUserManager userManager)
         {
             this.context = context;
@@ -34,6 +34,8 @@
             var totalUsersCount = await this.context.Users.CountAsync(cancellationToken);
 
             var adminIds = await this.userManager.GetUsersInRoleAsync(AppConstants.AdministratorRole);
+            var playerIds = await this.userManager.GetUsersInRoleAsync(AppConstants.PlayerRole);
+            var creatorIds = await this.userManager.GetUsersInRoleAsync(AppConstants.CreatorRole);
             var userSaldos = await this.context.SaldoUsers.ToListAsync();
 
             if (request?.Filters == null)
@@ -44,7 +46,7 @@
                     .ProjectTo<ListAllUsersResponseModel>(this.mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken), totalUsersCount);
 
-                AddUserRolesAndBalance(pagedUsers.Data, adminIds, userSaldos);
+                AddUserRolesAndBalance(pagedUsers.Data, adminIds, creatorIds, playerIds, userSaldos);
                 return pagedUsers;
             }
 
@@ -56,12 +58,12 @@
                 .ProjectTo<ListAllUsersResponseModel>(this.mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
             var result = PaginationHelper.CreatePaginatedResponse(request, users, totalUsersCount);
-            AddUserRolesAndBalance(users, adminIds, userSaldos);
+            AddUserRolesAndBalance(users, adminIds, creatorIds, playerIds, userSaldos);
 
             return result;
         }
 
-        private static void AddUserRolesAndBalance(IEnumerable<ListAllUsersResponseModel> users, IEnumerable<string> adminIds, List<SaldoUser> usersSaldo)
+        private static void AddUserRolesAndBalance(IEnumerable<ListAllUsersResponseModel> users, IEnumerable<string> adminIds, IEnumerable<string> creatorIds, IEnumerable<string> playerIds, List<SaldoUser> usersSaldo)
         {
             foreach (var user in users)
             {
@@ -71,10 +73,26 @@
                 if (adminIds.Contains(user.Id))
                 {
                     currentUserRoles.Add(AppConstants.AdministratorRole);
+                    nonCurrentRoles.Add(AppConstants.PlayerRole);
+                    nonCurrentRoles.Add(AppConstants.CreatorRole);
+                }
+                else if (creatorIds.Contains(user.Id))
+                {
+                    currentUserRoles.Add(AppConstants.CreatorRole);
+                    nonCurrentRoles.Add(AppConstants.AdministratorRole);
+                    nonCurrentRoles.Add(AppConstants.PlayerRole);
+                }
+                else if (playerIds.Contains(user.Id))
+                {
+                    currentUserRoles.Add(AppConstants.PlayerRole);
+                    nonCurrentRoles.Add(AppConstants.AdministratorRole);
+                    nonCurrentRoles.Add(AppConstants.CreatorRole);
                 }
                 else
                 {
                     nonCurrentRoles.Add(AppConstants.AdministratorRole);
+                    nonCurrentRoles.Add(AppConstants.PlayerRole);
+                    nonCurrentRoles.Add(AppConstants.CreatorRole);
                 }
                 user.Balance = usersSaldo.Where(x => x.UserId == user.Id).FirstOrDefault().Saldo;
                 user.CurrentRoles = currentUserRoles;

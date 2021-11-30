@@ -7,6 +7,8 @@ import { history } from "..";
 export const PrivateRoute = ({
   component: Component,
   adminOnly = false,
+  playerOnly = false,
+  creatorOnly = false,
   ...rest
 }) => {
   const { user } = useAuth();
@@ -20,6 +22,20 @@ export const PrivateRoute = ({
             return <Component {...props} />;
           }
           if (adminOnly && !user.isAdmin) {
+            history.push("/notFound");
+            return;
+          }
+          if (playerOnly && user.isPlayer) {
+            return <Component {...props} />;
+          }
+          if (playerOnly && !user.isPlayer) {
+            history.push("/notFound");
+            return;
+          }
+          if (creatorOnly && user.isCreator) {
+            return <Component {...props} />;
+          }
+          if (creatorOnly && !user.isCreator) {
             history.push("/notFound");
             return;
           }

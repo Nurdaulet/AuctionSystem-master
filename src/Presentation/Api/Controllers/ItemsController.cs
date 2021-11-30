@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Api.Common;
+    using Application;
     using Application.Common.Models;
     using Application.Items.Commands;
     using Application.Items.Commands.CreateItem;
@@ -68,7 +69,6 @@
         /// <summary>
         /// Creates item
         /// </summary>
-        [Authorize]
         [HttpPost]
         [SwaggerResponse(
             StatusCodes.Status201Created,
@@ -81,6 +81,7 @@
         [SwaggerResponse(
             StatusCodes.Status401Unauthorized,
             SwaggerDocumentation.UnauthorizedDescriptionMessage)]
+        [Authorize(Roles = AppConstants.CreatorRole)]
         public async Task<IActionResult> Post([FromForm] CreateItemCommand model)
         {
             var result = await this.Mediator.Send(model);
@@ -92,7 +93,6 @@
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
-        [Authorize]
         [HttpPut("{id}")]
         [SwaggerResponse(
             StatusCodes.Status204NoContent,
@@ -108,6 +108,7 @@
         [SwaggerResponse(
             StatusCodes.Status401Unauthorized,
             SwaggerDocumentation.UnauthorizedDescriptionMessage)]
+        [Authorize(Roles = AppConstants.CreatorRole)]
         public async Task<IActionResult> Put(Guid id, [FromForm] UpdateItemCommand model)
         {
             if (id != model.Id)

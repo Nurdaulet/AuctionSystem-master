@@ -8,11 +8,15 @@ export const setUserInLocalStorage = (response) => {
   const jwtParams = JSON.parse(atob(token.split(".")[1]));
   const id = jwtParams.id;
   const isAdmin = jwtParams.role?.toLowerCase().includes("admin");
+  const isPlayer = jwtParams.role?.toLowerCase().includes("player");
+  const isCreator = jwtParams.role?.toLowerCase().includes("creator");
 
   let dataToStore = {};
   dataToStore.id = id;
   dataToStore.balance = balance;
   dataToStore.isAdmin = isAdmin ?? false;
+  dataToStore.isCreator = isCreator ?? false;
+  dataToStore.isPlayer = isPlayer ?? false;
 
   localStorage.setItem(user, JSON.stringify(dataToStore));
   return dataToStore;
