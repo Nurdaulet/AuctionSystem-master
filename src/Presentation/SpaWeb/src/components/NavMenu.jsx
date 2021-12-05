@@ -57,23 +57,22 @@ export const NavMenu = () => {
               <Nav.Link onClick={() => history.push("/items/search")}>Items</Nav.Link>
               <Nav.Link onClick={() => history.push("/contact")}>
                 Contact us
-              </Nav.Link>\
-              {auth.user ? (<Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>) : (<Fragment></Fragment>)}
+              </Nav.Link>
+              {auth.user?.isCreator || auth.user?.isAdmin ? (<Button variant="primary" onClick={() => history.push("/items/create")}>Create New</Button>) : (<Fragment></Fragment>)}
             </Nav>
             {auth.user ? (
               <Nav>
                 <Nav.Link>
                   Balance: {balance.balance}
                   <Autorenew
-                  className={clsx({
-                    [classes.refresh]: true,
-                    spin: spin
-                  })}
-                  onClick={refreshCanvas}
-                  spin={360}
-                />
+                    className={clsx({
+                      [classes.refresh]: true,
+                      spin: spin
+                    })}
+                    onClick={refreshCanvas}
+                    spin={360}
+                  />
                 </Nav.Link>
-                
                 <NavDropdown
                   title={<FontAwesomeIcon icon={faUser} />}
                   style={{ textColor: "white" }}
@@ -95,7 +94,7 @@ export const NavMenu = () => {
                     }}
                   >
                     My Top up
-                  </NavDropdown.Item> 
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
                     onClick={() => {
@@ -103,7 +102,7 @@ export const NavMenu = () => {
                     }}
                   >
                     My Win List
-                  </NavDropdown.Item> 
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
                     onClick={() => {

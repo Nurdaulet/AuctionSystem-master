@@ -21,19 +21,19 @@ export const PrivateRoute = ({
           if (adminOnly && user.isAdmin) {
             return <Component {...props} />;
           }
+          if (playerOnly && user.isPlayer) {
+            return <Component {...props} />;
+          }
+          if (creatorOnly && user.isCreator) {
+            return <Component {...props} />;
+          }
           if (adminOnly && !user.isAdmin) {
             history.push("/notFound");
             return;
           }
-          if (playerOnly && user.isPlayer) {
-            return <Component {...props} />;
-          }
           if (playerOnly && !user.isPlayer) {
             history.push("/notFound");
             return;
-          }
-          if (creatorOnly && user.isCreator) {
-            return <Component {...props} />;
           }
           if (creatorOnly && !user.isCreator) {
             history.push("/notFound");

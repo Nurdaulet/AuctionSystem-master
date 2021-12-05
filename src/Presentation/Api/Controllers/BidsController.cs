@@ -16,22 +16,24 @@
     {
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status204NoContent,
-            SwaggerDocumentation.BidConstants.SuccessfulPostRequestDescriptionMessage)]
+    SwaggerDocumentation.BidConstants.SuccessfulPostRequestDescriptionMessage)]
         [SwaggerResponse(
-            StatusCodes.Status400BadRequest,
-            SwaggerDocumentation.BidConstants.BadRequestOnPostRequestDescriptionMessage,
-            typeof(BadRequestErrorModel))]
+    StatusCodes.Status400BadRequest,
+    SwaggerDocumentation.BidConstants.BadRequestOnPostRequestDescriptionMessage,
+    typeof(BadRequestErrorModel))]
         [SwaggerResponse(
-            StatusCodes.Status401Unauthorized,
-            SwaggerDocumentation.UnauthorizedDescriptionMessage)]
+    StatusCodes.Status401Unauthorized,
+    SwaggerDocumentation.UnauthorizedDescriptionMessage)]
         [SwaggerResponse(
-            StatusCodes.Status404NotFound,
-            SwaggerDocumentation.BidConstants.NotFoundOnPostRequestDescriptionMessage,
-            typeof(NotFoundErrorModel))]
-        [Authorize(Roles = AppConstants.PlayerRole)]
+    StatusCodes.Status404NotFound,
+    SwaggerDocumentation.BidConstants.NotFoundOnPostRequestDescriptionMessage,
+    typeof(NotFoundErrorModel))]
         public async Task<IActionResult> Post([FromBody] CreateBidCommand model)
         {
-            await this.Mediator.Send(model);
+            if (User.IsInRole(AppConstants.PlayerRole))
+            {
+                await this.Mediator.Send(model);
+            }
             return this.NoContent();
         }
 

@@ -33,7 +33,7 @@ function App() {
               <Route exact path="/sign-in" component={Login} />
               <Route exact path="/sign-up" component={Register} />
               <Route exact path="/error/network" component={NetworkError} />
-              <PrivateRoute exact path="/items/create" component={Create} />
+              <PrivateRoute adminOnly={true} creatorOnly={true} exact path="/items/create" component={Create} />
               <PrivateRoute path="/items/edit/:slug/:id" component={Edit} />
               <PrivateRoute
                 path="/administration"
