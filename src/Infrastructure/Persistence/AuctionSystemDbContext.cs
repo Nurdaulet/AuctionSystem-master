@@ -29,6 +29,19 @@
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Badges> Badges { get; set; }
+        public DbSet<BodyType> BodyTypes { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Extras> Extras { get; set; }
+        public DbSet<FuelType> FuelTypes { get; set; }
+        public DbSet<ItemBadges> ItemBadges { get; set; }
+        public DbSet<ItemExtras> ItemExtras { get; set; }
+        public DbSet<ItemTechFeatures> ItemTechFeatures { get; set; }
+        public DbSet<RegionalSpecs> RegionalSpecs { get; set; }
+        public DbSet<SellerType> SellerTypes { get; set; }
+        public DbSet<TechFeatures> TechFeatures { get; set; }
+        public DbSet<TransmissionType> TransmissionTypes { get; set; }
+        public DbSet<Warranty> Warranties { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<TransactionsNew> TransactionsNew { get; set; }
@@ -59,7 +72,7 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuctionSystemDbContext).Assembly);   
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuctionSystemDbContext).Assembly);
         }
     }
 }
