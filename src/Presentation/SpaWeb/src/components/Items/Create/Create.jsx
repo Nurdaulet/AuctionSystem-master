@@ -132,7 +132,6 @@ export const Create = () => {
               })}
             </Form.Control>
           </Form.Group>
-
           <Form.Group controlId="description">
             <Form.Label>Description</Form.Label>
             <Form.Control
@@ -166,6 +165,104 @@ export const Create = () => {
                 setEndTime={setEndTime}
                 startTime={startTime}
               />
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group className="col" controlId="CreatedYear">
+              <Form.Label>Created Year</Form.Label>
+              <StartTimeDatePicker
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+              />
+            </Form.Group>
+            <Form.Group className="col" controlId="odometer">
+              <Form.Label>Odometer</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  name="odometer"
+                  type="number"
+                  placeholder="100"
+                  aria-describedby="odometer"
+                />
+              </InputGroup>
+              {/* {errors.startingPrice && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.startingPrice.message}
+                </Form.Control.Feedback>
+              )} */}
+            </Form.Group>
+            <Form.Group className="col" controlId="horsePower">
+              <Form.Label>Horse Power</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  name="horsePower"
+                  type="number"
+                  placeholder="100"
+                  aria-describedby="horsePower"
+                />
+              </InputGroup>
+              {/* {errors.startingPrice && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.startingPrice.message}
+                </Form.Control.Feedback>
+              )} */}
+            </Form.Group>
+            <Form.Group className="col" controlId="doors">
+              <Form.Label>Doors</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  name="doors"
+                  type="number"
+                  placeholder="2"
+                  aria-describedby="doors"
+                />
+              </InputGroup>
+              {/* {errors.startingPrice && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.startingPrice.message}
+                </Form.Control.Feedback>
+              )} */}
+            </Form.Group>
+            <Form.Group className="col" controlId="cylinders">
+              <Form.Label>Cylinders</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  name="cylinders"
+                  type="number"
+                  placeholder="4"
+                  aria-describedby="cylinders"
+                />
+              </InputGroup>
+              {/* {errors.startingPrice && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.startingPrice.message}
+                </Form.Control.Feedback>
+              )} */}
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group className="col" controlId="steeringSide">
+              <Form.Label>Steering Side</Form.Label>
+              <Form.Control
+                custom
+                name="steeringSide"
+                ref={register({ required: "SteeringSide is required" })}
+                as="select"
+              >
+                <option
+                  key={0}
+                  value="Left"
+                >
+                  Left
+                </option>
+                <option
+                  key={1}
+                  value="Right"
+                >
+                  Right
+                </option>
+              </Form.Control>
             </Form.Group>
           </Row>
           <Form.Group controlId="startingPrice">

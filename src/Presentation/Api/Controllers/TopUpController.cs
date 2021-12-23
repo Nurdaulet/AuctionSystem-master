@@ -48,7 +48,6 @@ namespace Api.Controllers
             return this.Ok(result);
         }
 
-
         [Authorize(Roles = AppConstants.AdministratorRole)]
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status204NoContent,
