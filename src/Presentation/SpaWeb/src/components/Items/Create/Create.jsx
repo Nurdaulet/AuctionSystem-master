@@ -24,6 +24,13 @@ export const Create = () => {
   const { register, handleSubmit, errors } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [bodyTypes, setBodyTypes] = useState([]);
+  const [sellerTypes, setSellerTypes] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [extras, setExtras] = useState([]);
+  const [regionalSpecs, setRegionalSpecs] = useState([]);
+  const [fuelTypes, setFuelTypes] = useState([]);
+  const [badges, setBadges] = useState([]);
   const [pictures, setPictures] = useState([]);
   const { currentTime } = useTime();
   const [startTime, setStartTime] = useState();
@@ -37,6 +44,15 @@ export const Create = () => {
   useEffect(() => {
     categoriesService.getAllWithMakes().then((response) => {
       setCategories(response.data.data);
+    });
+    categoriesService.getAllOptions().then((response) => {
+      setBodyTypes(response.data.data.bodyTypes);
+      setSellerTypes(response.data.data.sellerTypes ?? []);
+      setColors(response.data.data.colors ?? []);
+      setExtras(response.data.data.extras ?? []);
+      setRegionalSpecs(response.data.data.regionalSpecs ?? []);
+      setFuelTypes(response.data.data.fuelTypes ?? []);
+      setBadges(response.data.data.badges ?? []);
     });
   }, []);
 
@@ -262,6 +278,150 @@ export const Create = () => {
                 >
                   Right
                 </option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="bodyType">
+              <Form.Label>BodyType</Form.Label>
+              <Form.Control
+                custom
+                name="bodyTypeId"
+                ref={register({ required: "BodyType is required" })}
+                as="select"
+              >
+                {bodyTypes.map((bodyType, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={bodyType.id}
+                    >
+                      {bodyType.name}
+                    </option>
+                  );
+                })}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="sellerType">
+              <Form.Label>SellerType</Form.Label>
+              <Form.Control
+                custom
+                name="sellerTypeId"
+                ref={register({ required: "SellerType is required" })}
+                as="select"
+              >
+                {sellerTypes.map((sellerType, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={sellerType.id}
+                    >
+                      {sellerType.name}
+                    </option>
+                  );
+                })}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="color">
+              <Form.Label>Color</Form.Label>
+              <Form.Control
+                custom
+                name="colorId"
+                ref={register({ required: "Color is required" })}
+                as="select"
+              >
+                {colors.map((color, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={color.id}
+                    >
+                      {color.name}
+                    </option>
+                  );
+                })}
+              </Form.Control>
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group className="col" controlId="extra">
+              <Form.Label>Extras</Form.Label>
+              <Form.Control
+                custom
+                name="extraId"
+                ref={register({ required: "Extra is required" })}
+                as="select"
+              >
+                <option
+                  key={0}
+                  value="Left"
+                >
+                  Left
+                </option>
+                <option
+                  key={1}
+                  value="Right"
+                >
+                  Right
+                </option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="regionalSpec">
+              <Form.Label>RegionalSpec</Form.Label>
+              <Form.Control
+                custom
+                name="regionalSpecId"
+                ref={register({ required: "RegionalSpec is required" })}
+                as="select"
+              >
+                {regionalSpecs.map((regionalSpec, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={regionalSpec.id}
+                    >
+                      {regionalSpec.name}
+                    </option>
+                  );
+                })}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="fuelType">
+              <Form.Label>FuelType</Form.Label>
+              <Form.Control
+                custom
+                name="fuelTypeId"
+                ref={register({ required: "FuelType is required" })}
+                as="select"
+              >
+                {fuelTypes.map((fuelType, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={fuelType.id}
+                    >
+                      {fuelType.name}
+                    </option>
+                  );
+                })}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="col" controlId="Badge">
+              <Form.Label>Badge</Form.Label>
+              <Form.Control
+                custom
+                name="BadgeId"
+                ref={register({ required: "Badge is required" })}
+                as="select"
+              >
+                {badges.map((badge, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={badge.id}
+                    >
+                      {badge.name}
+                    </option>
+                  );
+                })}
               </Form.Control>
             </Form.Group>
           </Row>

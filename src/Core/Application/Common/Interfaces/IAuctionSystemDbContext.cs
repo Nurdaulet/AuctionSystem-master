@@ -21,6 +21,20 @@
         DbSet<SaldoUser> SaldoUsers { get; set; }
 
         DbSet<RefreshToken> RefreshTokens { get; set; }
+        DbSet<Badges> Badges { get; set; }
+        DbSet<BodyType> BodyTypes { get; set; }
+        DbSet<Color> Colors { get; set; }
+        DbSet<Extras> Extras { get; set; }
+        DbSet<FuelType> FuelTypes { get; set; }
+        DbSet<ItemBadges> ItemBadges { get; set; }
+        DbSet<ItemExtras> ItemExtras { get; set; }
+        DbSet<ItemTechFeatures> ItemTechFeatures { get; set; }
+        DbSet<RegionalSpecs> RegionalSpecs { get; set; }
+        DbSet<SellerType> SellerTypes { get; set; }
+        DbSet<TechFeatures> TechFeatures { get; set; }
+        DbSet<TransmissionType> TransmissionTypes { get; set; }
+        DbSet<Warranty> Warranties { get; set; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

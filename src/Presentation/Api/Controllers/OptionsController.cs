@@ -18,7 +18,7 @@
         [SwaggerResponse(
             StatusCodes.Status200OK,
             SwaggerDocumentation.CategoriesConstants.SuccessfulGetRequestMessage,
-            typeof(MultiResponse<ListOptionsResponseModel>))]
+            typeof(Response<ListOptionsResponseModel>))]
         [SwaggerResponse(
             StatusCodes.Status404NotFound,
             SwaggerDocumentation.CategoriesConstants.BadRequestDescriptionMessage,

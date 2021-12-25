@@ -1,16 +1,14 @@
 ﻿namespace Application.Options.Queries.List
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Common.Interfaces;
     using Common.Models;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
 
-    public class ListOptionsQueryHandler : IRequestHandler<ListOptionsQuery, MultiResponse<ListOptionsResponseModel>>
+    public class ListOptionsQueryHandler : IRequestHandler<ListOptionsQuery, Response<ListOptionsResponseModel>>
     {
         private readonly IAuctionSystemDbContext context;
         private readonly IMapper mapper;
@@ -21,19 +19,34 @@
             this.mapper = mapper;
         }
 
-        public async Task<MultiResponse<ListOptionsResponseModel>> Handle(ListOptionsQuery request,
+        public async Task<Response<ListOptionsResponseModel>> Handle(ListOptionsQuery request,
             CancellationToken cancellationToken)
         {
-            // var categories = await this.context
-            //     .Categories
-            //     .Where(x => x.SortId != 0)
-            //     .OrderBy(u => u.SortId)
-            //     .Take(7)
-            //     .Include(c => c.SubCategories)
-            //     .ProjectTo<ListOptionsResponseModel>(this.mapper.ConfigurationProvider)
-            //     .ToListAsync(cancellationToken);
+            var badges = await this.context
+                .Badges
+                .ToListAsync(cancellationToken);
+            var bodyTypes = await this.context
+                .BodyTypes
+                .ToListAsync(cancellationToken);
+            var colors = await this.context
+                .Colors
+                .ToListAsync(cancellationToken);
+            var extras = await this.context
+                .Extras
+                .ToListAsync(cancellationToken);
+            var reqionalSpecs = await this.context
+                .RegionalSpecs
+                .ToListAsync(cancellationToken);
+            var fuelTypes = await this.context
+                .FuelTypes
+                .ToListAsync(cancellationToken);
+            var sellerTypes = await this.context
+                .SellerTypes
+                .ToListAsync(cancellationToken);
 
-            return new MultiResponse<ListOptionsResponseModel>(categories);
+            var listOptions = new ListOptionsResponseModel { BodyTypes = bodyTypes };
+
+            return new Response<ListOptionsResponseModel>(listOptions);
         }
     }
 }

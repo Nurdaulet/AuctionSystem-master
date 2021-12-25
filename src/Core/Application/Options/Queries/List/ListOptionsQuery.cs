@@ -3,5 +3,5 @@
     using Common.Models;
     using MediatR;
 
-    public class ListOptionsQuery : IRequest<MultiResponse<ListOptionsResponseModel>> { }
+    public class ListOptionsQuery : IRequest<Response<ListOptionsResponseModel>> { }
 }

@@ -12,7 +12,14 @@ const getAllWithMakes = () => {
     .then((response) => response);
 };
 
+const getAllOptions = () => {
+  return api
+    .get(process.env.REACT_APP_API_OPTIONS_ENDPOINT)
+    .then((response) => response);
+};
+
 export default {
   getAll,
   getAllWithMakes,
+  getAllOptions,
 };
